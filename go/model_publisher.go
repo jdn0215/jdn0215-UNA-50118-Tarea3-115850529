@@ -10,6 +10,8 @@ package swagger
 
 type Publisher struct {
 
+	PublisherId string `json:"publisherId,omitempty"`
+
 	Name string `json:"name,omitempty"`
 
 	Country string `json:"country,omitempty"`

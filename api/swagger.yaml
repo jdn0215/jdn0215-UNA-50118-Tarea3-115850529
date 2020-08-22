@@ -304,6 +304,8 @@ components:
     Author:
       type: object
       properties:
+        authorId:
+          type: string
         name:
           type: string
         nationality:
@@ -316,10 +318,13 @@ components:
         nationality: nationality
         name: name
         birth: birth
+        authorId: authorId
         genere: genere
     Publisher:
       type: object
       properties:
+        publisherId:
+          type: string
         name:
           type: string
         country:
@@ -330,6 +335,7 @@ components:
           type: string
       example:
         country: country
+        publisherId: publisherId
         name: name
         founded: founded
         genere: genere

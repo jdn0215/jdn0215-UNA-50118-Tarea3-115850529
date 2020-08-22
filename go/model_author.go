@@ -10,6 +10,8 @@ package swagger
 
 type Author struct {
 
+	AuthorId string `json:"authorId,omitempty"`
+
 	Name string `json:"name,omitempty"`
 
 	Nationality string `json:"nationality,omitempty"`
