@@ -71,6 +71,206 @@ paths:
       responses:
         "200":
           description: OK
+  /authors/{authorId}:
+    get:
+      summary: Returns a author by ID.
+      parameters:
+      - name: authorId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+    put:
+      summary: Update author information
+      parameters:
+      - name: authorId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: Author data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+        required: true
+      responses:
+        "200":
+          description: OK
+    delete:
+      summary: Delete a author by ID.
+      parameters:
+      - name: authorId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /authors/:
+    post:
+      summary: Create a new author
+      requestBody:
+        description: Author data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+        required: true
+      responses:
+        "200":
+          description: OK
+  /publishers/{publisherId}:
+    get:
+      summary: Returns a publisher by ID.
+      parameters:
+      - name: publisherId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Publisher'
+    put:
+      summary: Update publisher information
+      parameters:
+      - name: publisherId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: Publisher data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Publisher'
+        required: true
+      responses:
+        "200":
+          description: OK
+    delete:
+      summary: Delete a publisher by ID.
+      parameters:
+      - name: publisherId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /publishers/:
+    post:
+      summary: Create a new publisher
+      requestBody:
+        description: Publisher data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Publisher'
+        required: true
+      responses:
+        "200":
+          description: OK
+  /books/{bookId}/authors:
+    get:
+      summary: Get Authors by book id
+      parameters:
+      - name: bookId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayofAuthors'
+  /author/{authorId}/books:
+    get:
+      summary: Get books by author id
+      parameters:
+      - name: authorId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayofBooks'
+  /books/{bookId}/publishers:
+    get:
+      summary: Get Publishers by book id
+      parameters:
+      - name: bookId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayofPublishers'
+  /publisher/{publisherId}/books:
+    get:
+      summary: Get books by publisher id
+      parameters:
+      - name: publisherId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayofBooks'
 components:
   schemas:
     Book:
@@ -101,3 +301,56 @@ components:
         language: ENGLISH
         title: Database System
         bookId: book01
+    Author:
+      type: object
+      properties:
+        name:
+          type: string
+        nationality:
+          type: string
+        birth:
+          type: string
+        genere:
+          type: string
+      example:
+        nationality: nationality
+        name: name
+        birth: birth
+        genere: genere
+    Publisher:
+      type: object
+      properties:
+        name:
+          type: string
+        country:
+          type: string
+        founded:
+          type: string
+        genere:
+          type: string
+      example:
+        country: country
+        name: name
+        founded: founded
+        genere: genere
+    ArrayofBooks:
+      type: array
+      items:
+        type: object
+        additionalProperties:
+          $ref: '#/components/schemas/Book'
+      x-schema-name: ArrayofBooks
+    ArrayofAuthors:
+      type: array
+      items:
+        type: object
+        additionalProperties:
+          $ref: '#/components/schemas/Author'
+      x-schema-name: ArrayofAuthors
+    ArrayofPublishers:
+      type: array
+      items:
+        type: object
+        additionalProperties:
+          $ref: '#/components/schemas/Publisher'
+      x-schema-name: ArrayofPublishers
