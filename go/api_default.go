@@ -27,16 +27,30 @@ var books = []Book{
 var authors = []Author{
     Author{
         AuthorId: "A1",
-	    Name: "Abraham Silberschatz",
-	    Nationality: "Costa Rica",
-	    Birth: "1980-02-02",
-	    Genere: "Computadoras"},
+        Name: "Abraham Silberschatz",
+        Nationality: "Costa Rica",
+        Birth: "1980-02-02",
+        Genere: "Computadoras"},
     Author{
         AuthorId: "A2",
-	    Name: "Andrew S. Tanenbaum",
-	    Nationality: "Costa Rica",
-	    Birth: "1980-03-02",
-	    Genere: "Computadoras"}}
+        Name: "Andrew S. Tanenbaum",
+        Nationality: "Costa Rica",
+        Birth: "1980-03-02",
+        Genere: "Computadoras"}}
+
+var publishers = []Publisher{
+    Publisher{
+        PublisherId: "P1",
+        Name : "John Wiley & Sons",
+        Country :"Costa Rica",
+        Founded : "1980",
+        Genere :"Computadoras"},
+    Publisher{
+        PublisherId: "P2",
+        Name : "Andrew S. Tanenbaum",
+        Country :"Costa Rica",
+        Founded : "1994",
+        Genere :"Computadoras"}}
 
 
 
@@ -58,6 +72,14 @@ func findAuthor(x string) int {
     return -1
 }
 
+func findPublisher(x string) int {
+    for i, publiser := range publishers {
+        if x == publiser.PublisherId {
+            return i
+        }
+    }
+    return -1
+}
 
 
 func AuthorAuthorIdBooksGet(w http.ResponseWriter, r *http.Request) {
@@ -187,25 +209,52 @@ func PublisherPublisherIdBooksGet(w http.ResponseWriter, r *http.Request) {
 }
 
 func PublishersPost(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
-	/**@TODO**/
+    var p Publisher
+    err := json.NewDecoder(r.Body).Decode(&p)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+    publishers = append(publishers, p)
+    w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+    w.WriteHeader(http.StatusOK)
 }
 
 func PublishersPublisherIdDelete(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
-	/**@TODO**/
+    id := path.Base(r.URL.Path)
+    i := findPublisher(id)
+    if i == -1 {
+        return
+	}
+	publishers = append(publishers[:i], publishers[i+1:]...)
+    w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+    w.WriteHeader(http.StatusOK)
 }
 
 func PublishersPublisherIdGet(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
-	/**@TODO**/
+    id := path.Base(r.URL.Path)
+    i := findPublisher(id)
+    if i == -1 {
+        return
+    }
+    dataJson, _ := json.Marshal(publishers[i])
+    w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+    w.Write(dataJson)
+    w.WriteHeader(http.StatusOK)
 }
 
 func PublishersPublisherIdPut(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
-	/**@TODO**/
+    var p Publisher
+    err := json.NewDecoder(r.Body).Decode(&p)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+	}
+	i := findPublisher(p.PublisherId)
+	if i == -1 {
+		return
+	}
+    publishers[i] =  p
+    w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+    w.WriteHeader(http.StatusOK)
 }
