@@ -83,9 +83,22 @@ func findPublisher(x string) int {
 
 
 func AuthorAuthorIdBooksGet(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+    id := path.Base(path.Dir(r.URL.Path))
+    i := findAuthor(id);
+    if i == -1{
+        return;
+    }
+    author := authors[i];
+    result := []Book{};
+    for _, book := range books {
+        if author.Name == book.Author {
+            result = append(result,book);
+        }
+    }
+    dataJson, _ := json.Marshal(result);
+    w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+    w.Write(dataJson)
 	w.WriteHeader(http.StatusOK)
-	/**@TODO**/
 }
 
 func AuthorsAuthorIdDelete(w http.ResponseWriter, r *http.Request) {
@@ -140,9 +153,22 @@ func AuthorsPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func BooksBookIdAuthorsGet(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+    id := path.Base(path.Dir(r.URL.Path))
+    i := find(id);
+    if i == -1{
+        return;
+    }
+    book := books[i];
+    result := []Author{};
+    for _, author := range authors {
+        if author.Name == book.Author {
+            result = append(result,author);
+        }
+    }
+    dataJson, _ := json.Marshal(result);
+    w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+    w.Write(dataJson)
 	w.WriteHeader(http.StatusOK)
-	/**@TODO**/
 }
 
 func BooksBookIdDelete(w http.ResponseWriter, r *http.Request) {
@@ -169,9 +195,22 @@ func BooksBookIdGet(w http.ResponseWriter, r *http.Request) {
 }
 
 func BooksBookIdPublishersGet(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+    id := path.Base(path.Dir(r.URL.Path))
+    i := find(id);
+    if i == -1{
+        return;
+    }
+    book := books[i];
+    result := []Publisher{};
+    for _, p := range publishers {
+        if p.Name == book.Publisher {
+            result = append(result,p);
+        }
+    }
+    dataJson, _ := json.Marshal(result);
+    w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+    w.Write(dataJson)
 	w.WriteHeader(http.StatusOK)
-	/**@TODO**/
 }
 
 func BooksBookIdPut(w http.ResponseWriter, r *http.Request) {
@@ -203,9 +242,22 @@ func BooksPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func PublisherPublisherIdBooksGet(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+    id := path.Base(path.Dir(r.URL.Path))
+    i := findPublisher(id);
+    if i == -1{
+        return;
+    }
+    p := publishers[i];
+    result := []Book{};
+    for _, book := range books {
+        if p.Name == book.Publisher {
+            result = append(result,book);
+        }
+    }
+    dataJson, _ := json.Marshal(result);
+    w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+    w.Write(dataJson)
 	w.WriteHeader(http.StatusOK)
-	/**@TODO**/
 }
 
 func PublishersPost(w http.ResponseWriter, r *http.Request) {
